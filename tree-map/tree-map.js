@@ -33,5 +33,30 @@ var Tree = function(value) {
   this.children = [];
 };
 
+Tree.prototype.map = function(fun){
+
+var instance = new Tree(fun(this.value))
+newTreeMaker(this, instance)
+function newTreeMaker(thisTree, newTree){
+  thisTree.children.forEach((one, i) => {
+    newTree.children.push(new Tree(fun(one.value)))
+    newTreeMaker(one, newTree.children[i])
+
+  })
+
+}
+return instance
+}
 
 
+Tree.prototype.addChild = function(val){
+  this.children.push(new Tree(val))
+}
+
+
+var tree = new Tree(5)
+tree.addChild(1)
+tree.children[0].addChild(10)
+var another = tree.map((val) => val * 2)
+console.log(another.children[0])
+console.log(tree.children[0])
